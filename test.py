@@ -48,14 +48,18 @@ def land():
 	sleep(1)
 	print("Mode: %s" % vehicle.mode.name)
 
-if __name__ == "__main__":
-
+def connection():
 	# Connect to the Vehicle
 	print 'Connecting to vehicle on: %s' % args.connect
 	vehicle = connect(args.connect, baud=115200, wait_ready=True)
 	print("INITIALIZATION FINISHED")
-	print("Mode: %s" % vehicle.mode.name)
+	print("Version: %s" % vehicle.version)
+	return vehicle
 
+if __name__ == "__main__":
+
+
+	vehicle=connection()
 	sleep(5)
 
 	sock()
