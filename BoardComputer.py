@@ -12,7 +12,7 @@ args = parser.parse_args()
 
 class BoardComputer():
 
-	def __init__(self,port=50010,address='192.168.1.86'):
+	def __init__(self,drone,port=50010,address='192.168.1.86'):
 		print("Creation of SimpleSocket instance")
 
 		#Create a TCP/IP socket
@@ -26,7 +26,7 @@ class BoardComputer():
 		#Listen for incomimg connection
 		self.sock.listen(1)
 		self.connection=None
-		#self.drone=drone
+		self.drone=drone
 	
 	
 	#def __del__(self):
@@ -41,11 +41,35 @@ class BoardComputer():
 
 	def listener_loop(self):
 		print("Start Listener")
-		while True:
-				data = self.connection.recv(4096)
-				target = data.decode("ASCII").split(" ")
-				print('Received "%s"' % target)
-				sleep(0.01)
+		try:
+			if self.connection is None:
+				self.connect()
+			while True:
+					data = self.connection.recv(4096)
+					target = data.decode("ASCII").split(" ")
+					print('Received "%s"' % target)
+					if target[0]=="mode":
+						if len(target)==2:
+							self.drone.set_mode(target[1])
+					elif target[0] == "arm":
+						self.drone.arm()
+					elif target[0] == "disarm":
+						self.drone.disarm()
+					else:
+						break
+
+					sleep(0.01)
+					
+		except KeyboardInterrupt :
+			print("Exception occured")
+			
+
+
+	def write(self,msg):
+		self.connection.send(msg.encode())
+		
+		
+		
 				
 		
 
@@ -55,10 +79,10 @@ if __name__=="__main__":
 	print ('Connecting to vehicle on: %s' % args.connect)
 	pixhawk = connect(args.connect, baud=115200, wait_ready=True)
 	print("INITIALIZATION FINISHED")
-	Nvidia=BoardComputer()
+	#Declarations of instance
+	drone=Drone(pixhawk)
+	Nvidia=BoardComputer(drone)
 	Nvidia.connect()
-	#drone=Drone(pixhawk)
-	#drone.set_mode("GUIDED")
 	Nvidia.listener_loop()
 
 
