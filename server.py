@@ -8,7 +8,7 @@ from time import sleep
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  
 # Bind the socket to the port
-server_address = ('192.168.1.86',50007)
+server_address = ('192.168.1.86',5010)
 print ('starting up on %s port %s' % server_address)
 sock.bind(server_address)
  
@@ -25,9 +25,6 @@ while True:
 	data = connection.recv(1024)
 	dec_data = data.decode()
 	print('Received "%s"' % dec_data)
-	mes = "bien recu"
-	connection.send(mes.encode())
-
            
 # Clean up the connection
 connection.close()
