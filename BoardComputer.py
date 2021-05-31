@@ -42,24 +42,21 @@ class BoardComputer():
 	def listener_loop(self):
 		print("Start Listener")
 		while True:
-				if self.connection is None:
-					print("Reconnect...")
-					self.connect()
-	
-				else:
-					data = self.connection.recv(1024)
-					target = data.decode()
-					print('Received "%s"' % target)
-
+				data = self.connection.recv(4096)
+				target = data.decode("ASCII").split(" ")
+				print('Received "%s"' % target)
+				sleep(0.01)
+				
 		
 
 if __name__=="__main__":
-	print("Begin of the programm")
-	# Connect to the Vehicle
-	#print 'Connecting to vehicle on: %s' % args.connect
-	#pixhawk = connect(args.connect, baud=115200, wait_ready=True)
-	#print("INITIALIZATION FINISHED")
+	print("Begin of the program")
+	#Connect to the Vehicle
+	print ('Connecting to vehicle on: %s' % args.connect)
+	pixhawk = connect(args.connect, baud=115200, wait_ready=True)
+	print("INITIALIZATION FINISHED")
 	Nvidia=BoardComputer()
+	Nvidia.connect()
 	#drone=Drone(pixhawk)
 	#drone.set_mode("GUIDED")
 	Nvidia.listener_loop()
