@@ -48,13 +48,18 @@ class BoardComputer():
 					data = self.connection.recv(4096)
 					target = data.decode("ASCII").split(" ")
 					print('Received "%s"' % target)
-					if target[0]=="mode":
-						if len(target)==2:
-							self.drone.set_mode(target[1])
+					if target[0]=="mode" and len(target)==2:
+						self.drone.set_mode(target[1])
 					elif target[0] == "arm":
 						self.drone.arm()
 					elif target[0] == "disarm":
 						self.drone.disarm()
+					elif target[0]=="takeoff":
+						self.drone.takeoff(target[1])
+					elif target[0]=="alt":
+						self.drone.reach_altitude(target[1])
+					elif target[0]=="go" and len(target)==4:
+						self.drone.go_location(target[1],target[2],target[3])
 					else:
 						break
 
@@ -70,9 +75,6 @@ class BoardComputer():
 		
 		
 		
-				
-		
-
 if __name__=="__main__":
 	print("Begin of the program")
 	#Connect to the Vehicle
