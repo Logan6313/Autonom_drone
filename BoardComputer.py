@@ -54,12 +54,14 @@ class BoardComputer():
 						self.drone.arm()
 					elif target[0] == "disarm":
 						self.drone.disarm()
-					elif target[0]=="takeoff":
+					elif target[0]=="takeoff" and len(target)==2:
 						self.drone.takeoff(target[1])
-					elif target[0]=="alt":
-						self.drone.reach_altitude(target[1])
-					elif target[0]=="go" and len(target)==4:
-						self.drone.go_location(target[1],target[2],target[3])
+					elif target[0]=="alt" and len(target)==3:
+						self.drone.reach_altitude(target[1],target[2])
+					elif target[0]=="go" and len(target)==5:
+						self.drone.go_location(target[1],target[2],target[3],target[4])
+					elif target[0]=="home" and len(target)==4:
+						self.drone.set_home_location(target[1],target[2],target[3])
 					else:
 						break
 
