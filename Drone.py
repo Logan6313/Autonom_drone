@@ -111,7 +111,33 @@ class Drone():
 		print("Reached location")
 
 	def mission(self):
-		print("Let's load a mission !")
+		print("Let's execute mission")
+
+		cmds=self.pixhawk.commands
+		cmds.clear()
+		
+		takeoff=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,0,0,0,0,0,0,0,0,10)
+		speed=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,0,0,0,15,-1,0,0,0,10)
+		point1=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0, 0, 0, 0, 0, 0, -35.3649,149.16967,20)
+		rtl=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_RETURN_TO_LAUNCH,0,0,0,0,0,0,0,0,0)
+		cmds.add(takeoff)
+		cmds.add(speed)
+		cmds.add(point1)
+		cmds.add(rtl)
+		cmds.upload()
+
+		self.takeoff(10)
+		self.pixhawk.commands.next=0
+		self.set_mode("AUTO")
+		while True:
+			waypoint=self.pixhawk.commands.next
+			print("Current Waypoint: %s",waypoint)
+			if waypoint==cmds.count:
+				break
+			sleep(1)
+
+		print("Sort de la boucle")
+		
 
 if __name__=="__main__":
 	print("Begin of the program")	

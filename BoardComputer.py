@@ -62,6 +62,8 @@ class BoardComputer():
 						self.drone.go_location(target[1],target[2],target[3],target[4])
 					elif target[0]=="home" and len(target)==4:
 						self.drone.set_home_location(target[1],target[2],target[3])
+					elif target[0]=="mission":
+						self.drone.mission()
 					else:
 						break
 
