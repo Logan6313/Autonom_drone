@@ -13,11 +13,12 @@ sock.connect(server_address)
  
 
 # Send data
-message = raw_input ('->')
-enc_mes = message.encode()
-print('Sending "%s"' % message)
-sock.send(enc_mes)
-sleep(1)
+while True:
+	message = raw_input ('->')
+	enc_mes = message.encode()
+	print('Sending "%s"' % message)
+	sock.send(enc_mes)
+	sleep(1)
 
 print('Closing socket')
 sock.close()
