@@ -1,6 +1,7 @@
 from dronekit import *
 from pymavlink import mavutil
 from time import sleep
+import math
 
 
 class Drone():
@@ -110,6 +111,17 @@ class Drone():
 
 		print("Reached location")
 
+	def calc_distance(self,current,target):
+		c_lat=math.radians(current.lat)
+		t_lat=math.radians(target.lat)
+		c_lon=math.radians(current.lon)
+		t_lon=math.radians(target.lon)
+
+		d=6371*math.acos(math.sin(c_lat)*math.sin(t_lat)+math.cos(c_lat)*math.cos(t_lat)*math.cos(t_lon-c_lon))
+		
+		return d
+		
+		
 	def mission(self):
 		print("Let's execute mission")
 
