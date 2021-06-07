@@ -122,25 +122,38 @@ class Drone():
 		return d*1000
 
 
-	def mission(self):
+	def mission(self,file):
 		print("Let's execute mission")
-		lat=[ -35.36424187, -35.36424187,-35.36424187]
-		lon=[ 149.16666566,149.16729521,149.16729521]
-		alt=[20,20,20]
+		lat=[]
+		lon=[]
+		alt=[]
 
 		cmds=self.pixhawk.commands
 		cmds.clear()
 		
-		takeoff=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_TAKEOFF,0,0,0,0,0,0,0,0,10)
-		speed=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_DO_CHANGE_SPEED,0,0,0,15,-1,0,0,0,10)
-		point1=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0, 0, 0, 0, 0, 0,lat[0],lon[0],alt[0])
-		point2=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0, 0, 0, 0, 0, 0,lat[1],lon[1],alt[1])
-		point3=Command(0,0,0,mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT, mavutil.mavlink.MAV_CMD_NAV_WAYPOINT,0, 0, 0, 0, 0, 0,lat[2],lon[2],alt[2])
-		cmds.add(takeoff)
-		cmds.add(speed)
-		cmds.add(point1)
-		cmds.add(point2)
-		cmds.add(point3)
+
+		with open(file) as f:
+			for i, line in enumerate(f):
+				buf=line.split(' ')
+				if buf[0]=="Takeoff":
+					cmd=Command(0,0,0,3,22,0,0,0,0,0,0,0,0,float(buf[3]))
+				elif buf[0]=="Speed":
+					cmd=Command(0,0,0,3,178,0,0,0,float(buf[3]),-1,0,0,0,10)
+				elif buf[0]=="Location":
+					cmd=Command(0,0,0,3,16,0,0,0,0,0,0,float(buf[2]),float(buf[3]),float(buf[4]))
+					lat.append(float(buf[2]))
+					lon.append(float(buf[3]))
+					alt.append(float(buf[4]))
+				elif buf[0]=="End":
+					if buf[1]== "RTL":
+						cmd=Command(0,0,0,3,20,0,0,0,0,0,0,0,0,0)
+					elif buf[1]=="LAND":
+						cmd=Command(0,0,0,3,21,0,0,0,0,0,0,0,0,0)
+				else:
+					break
+				cmds.add(cmd)
+
+																							
 		cmds.upload()
 
 		self.takeoff(10)
@@ -149,19 +162,17 @@ class Drone():
 		while True:
 			waypoint=self.pixhawk.commands.next
 			print("Current Waypoint: %s",waypoint)
-			if waypoint>1:
+			if waypoint>1 and waypoint<cmds.count:
 				d=self.calc_distance(self.current_location(),LocationGlobalRelative(lat[waypoint-2],lon[waypoint-2],alt[waypoint-2]))
 				while d>10:
 					d=self.calc_distance(self.current_location(),LocationGlobalRelative(lat[waypoint-2],lon[waypoint-2],alt[waypoint-2]))	
 					print("Distance : " + str(d) + " meters")
 					sleep(1)
+
 			if waypoint==cmds.count:
 				break
 			sleep(1)
 
-		print("Return to Launch")
-		self.set_mode("RTL")
-		
 
 if __name__=="__main__":
 	print("Begin of the program")	

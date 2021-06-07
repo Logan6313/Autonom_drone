@@ -63,7 +63,7 @@ class BoardComputer():
 					elif target[0]=="home" and len(target)==4:
 						self.drone.set_home_location(target[1],target[2],target[3])
 					elif target[0]=="mission":
-						self.drone.mission()
+						self.drone.mission("test.txt")
 					else:
 						break
 
