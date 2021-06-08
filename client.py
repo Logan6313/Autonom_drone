@@ -14,12 +14,24 @@ sock.connect(server_address)
 
 # Send data
 while True:
-	message = raw_input ('->')
-	enc_mes = message.encode()
-	print('Sending "%s"' % message)
-	sock.send(enc_mes)
-	sleep(1)
+	try:
+		message = raw_input ('->')
+		enc_mes = message.encode()
+		print('Sending "%s"' % message)
+		sock.send(enc_mes)
+		data=sock.recv(4096)
+		if not data:
+			break
+		else:
+			print(data)
+		sleep(0.5)
 
+	except KeyboardInterrupt:
+		message="close"
+		enc_mes=message.encode()
+		sock.send(enc_mes)
+		break
+			
 print('Closing socket')
 sock.close()
 
