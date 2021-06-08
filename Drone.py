@@ -10,28 +10,44 @@ class Drone():
 		print("Creation of Drone instance")
 		self.pixhawk=pixhawk
 
-	def set_mode(self,data):
+	def set_mode(self,data=None):
 		print("Change flight mode")
-		self.pixhawk.mode=VehicleMode(data)
+		if data is None:
+			return self.pixhawk.mode
+		else:
+			self.pixhawk.mode=VehicleMode(data)
 
-	def arm(self):
-		print("Let's arm !")
+	def arm(self,state=None):
 
-		while not self.pixhawk.is_armable:
-			print " Waiting for vehicle to initialise..."
-			time.sleep(1)
-				
-		print "Arming motors"
-		self.set_mode("GUIDED")
-		self.pixhawk.armed = True
+		if state is None:
+			return self.pixhawk.armed
 
-		while not self.pixhawk.armed:
-			print " Waiting for arming..."
-			time.sleep(1)
+		elif state=="on":
+			print("Let's arm !")
 
-	def disarm(self):
-		print("Let's disarm !")
-		self.pixhawk.armed=False
+			while not self.pixhawk.is_armable:
+				print " Waiting for vehicle to initialise..."
+				time.sleep(1)
+					
+			print "Arming motors"
+			self.set_mode("GUIDED")
+			self.pixhawk.armed = True
+
+			while not self.pixhawk.armed:
+				print " Waiting for arming..."
+				time.sleep(1)
+
+			return True
+
+		elif state=="off":
+			print("Let's disarm !")
+			self.pixhawk.armed=False
+			while not self.pixhawk.armed==False:
+				print " Waiting for disarming..."
+				time.sleep(1)
+
+			return True
+
 
 	def airspeed(self,data):
 		print("Let's change airspeed velocity !")
@@ -60,7 +76,7 @@ class Drone():
 	def takeoff(self,data):
 		print("Let's takeoff !")
 
-		self.arm()
+		self.arm("on")
 		self.pixhawk.simple_takeoff(float(data))
 
 		while True:
@@ -71,6 +87,7 @@ class Drone():
 			sleep(1)
 
 		print("Take off complete")
+
 
 	def reach_altitude(self,data,speed):
 		print("Let's reach altitude: " + data)
@@ -152,7 +169,6 @@ class Drone():
 				else:
 					break
 				cmds.add(cmd)
-
 																							
 		cmds.upload()
 
