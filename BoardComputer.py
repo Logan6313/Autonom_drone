@@ -102,6 +102,15 @@ class BoardComputer():
 						self.drone.mission("test.txt")
 						self.write("Mission end")
 
+					elif target[0]=='v':
+						if len(target)==4:
+							self.drone.manual_control(target[1],target[2],target[3])
+							self.write("Manual control ok")
+
+					elif target[0]=="info":
+						vehicle_state=self.drone.info()
+						self.write("Version: {} \nLatitude: {} \nLongitude: {} \nAltitude: {}m \nBattery voltage: {} mv \nBattery percent {} % ".format(vehicle_state[0],vehicle_state[1],vehicle_state[2],vehicle_state[3],vehicle_state[4],vehicle_state[5]))
+
 					elif target[0]=="close":
 						self.close()
 						break
@@ -114,13 +123,12 @@ class BoardComputer():
 		except KeyboardInterrupt :
 			print("Exception occured")
 			self.close()
-			
-			
-
-
+				
 	def write(self,msg):
-		self.connection.send(msg.encode())
-
+		if self.connection is None:
+			self.connect()
+		else:
+			self.connection.send(msg.encode())
 		
 		
 if __name__=="__main__":

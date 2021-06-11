@@ -9,6 +9,12 @@ class Drone():
 	def __init__(self,pixhawk):
 		print("Creation of Drone instance")
 		self.pixhawk=pixhawk
+	
+	def info(self):
+			vehicle_state=[self.pixhawk.version,self.pixhawk.location.global_frame.lat,self.pixhawk.location.global_frame.lon,
+self.pixhawk.location.global_frame.alt,self.pixhawk.battery.voltage,self.pixhawk.battery.level]
+
+			return vehicle_state
 
 	def set_mode(self,data=None):
 		print("Change flight mode")
@@ -183,11 +189,20 @@ class Drone():
 				while d>10:
 					d=self.calc_distance(self.current_location(),LocationGlobalRelative(lat[waypoint-2],lon[waypoint-2],alt[waypoint-2]))	
 					print("Distance : " + str(d) + " meters")
+					 
 					sleep(1)
 
 			if waypoint==cmds.count:
 				break
 			sleep(1)
+
+	def manual_control(self,vx,vy,vz):
+		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000111,0,0,0,float(vx),float(vy),float(vz),0,0,0,0,0)
+		self.pixhawk.send_mavlink(msg)
+		self.pixhawk.flush()
+		
+			
+			
 
 
 if __name__=="__main__":
