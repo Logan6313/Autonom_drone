@@ -12,7 +12,7 @@ class Drone():
 	
 	def info(self):
 			vehicle_state=[self.pixhawk.version,self.pixhawk.location.global_frame.lat,self.pixhawk.location.global_frame.lon,
-self.pixhawk.location.global_frame.alt,self.pixhawk.battery.voltage,self.pixhawk.battery.level]
+self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.battery.voltage,self.pixhawk.battery.level]
 
 			return vehicle_state
 
@@ -196,15 +196,57 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.battery.voltage,self.pixhawk
 				break
 			sleep(1)
 
-	def manual_control(self,vx,vy,vz):
-		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000111,0,0,0,float(vx),float(vy),float(vz),0,0,0,0,0)
+	def manual_control_x(self,x):
+		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000000,float(x),0,0,0,0,0,0,0,0,0,0)
 		self.pixhawk.send_mavlink(msg)
 		self.pixhawk.flush()
+
+	def manual_control_y(self,y):
+		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000000,0,float(y),0,0,0,0,0,0,0,0,0)
+		self.pixhawk.send_mavlink(msg)
+		self.pixhawk.flush()
+
+	def send_global_velocity(velocity_x, velocity_y, velocity_z, duration):
+
+		msg = self.pixhawk.message_factory.set_position_target_global_int_encode(
+		    0,       # time_boot_ms (not used)
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, # frame
+		    0b0000111111000111, # type_mask (only speeds enabled)
+		    0, # lat_int - X Position in WGS84 frame in 1e7 * meters
+		    0, # lon_int - Y Position in WGS84 frame in 1e7 * meters
+		    0, # alt - Altitude in meters in AMSL altitude(not WGS84 if absolute or relative)
+		    # altitude above terrain if GLOBAL_TERRAIN_ALT_INT
+		    float(velocity_x), # X velocity in NED frame in m/s
+		    float(velocity_y), # Y velocity in NED frame in m/s
+		    float(velocity_z), # Z velocity in NED frame in m/s
+		    0, 0, 0, # afx, afy, afz acceleration (not supported yet, ignored in GCS_Mavlink)
+		    0, 0)    # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink) 
+
+		# send command to vehicle on 1 Hz cycle
+		for x in range(0,int(duration)):
+		    self.pixhawk.send_mavlink(msg)
+		    sleep(1)
+
+
+	def condition_yaw(self,yaw):
+
+		# create the CONDITION_YAW command using command_long_encode()
+		msg = self.pixhawk.message_factory.command_long_encode(
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
+		    0, #confirmation
+		    float(yaw),    # param 1, yaw in degrees
+		    0,          # param 2, yaw speed deg/s
+		    1,          # param 3, direction -1 ccw, 1 cw
+		    0, # param 4, relative offset 1, absolute angle 0
+		    0, 0, 0)    # param 5 ~ 7 not used
+		# send command to vehicle
+		self.pixhawk.send_mavlink(msg)
+
+
 		
-			
-			
-
-
+					
 if __name__=="__main__":
 	print("Begin of the program")	
 

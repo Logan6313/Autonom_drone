@@ -102,14 +102,29 @@ class BoardComputer():
 						self.drone.mission("test.txt")
 						self.write("Mission end")
 
-					elif target[0]=='v':
-						if len(target)==4:
-							self.drone.manual_control(target[1],target[2],target[3])
-							self.write("Manual control ok")
+					elif target[0]=='x':
+						if len(target)==2:
+							self.drone.manual_control_x(target[1])
+							self.write("Manual control x ok")
+
+					elif target[0]=='y':
+						if len(target)==2:
+							self.drone.manual_control_y(target[1])
+							self.write("Manual control y ok")
+
+
+					elif target[0]=="yaw":
+							self.drone.condition_yaw(target[1])
+							self.write("Manual control yaw ok")
+										
+					elif target[0]=="vel":
+						if len(target)==5:
+							self.drone.send_global_velocity(target[1],target[2],target[3],target[4])
+							self.write("Velocity changed")
 
 					elif target[0]=="info":
 						vehicle_state=self.drone.info()
-						self.write("Version: {} \nLatitude: {} \nLongitude: {} \nAltitude: {}m \nBattery voltage: {} mv \nBattery percent {} % ".format(vehicle_state[0],vehicle_state[1],vehicle_state[2],vehicle_state[3],vehicle_state[4],vehicle_state[5]))
+						self.write("Version: {} \nLatitude: {} \nLongitude: {} \nAltitude: {}m \n Yaw: {}  \nBattery voltage: {} mv \nBattery percent {} % ".format(vehicle_state[0],vehicle_state[1],vehicle_state[2],vehicle_state[3],vehicle_state[4],vehicle_state[5],vehicle_state[6]))
 
 					elif target[0]=="close":
 						self.close()
@@ -122,6 +137,7 @@ class BoardComputer():
 					
 		except KeyboardInterrupt :
 			print("Exception occured")
+			self.drone.set_mode("RTL")
 			self.close()
 				
 	def write(self,msg):
