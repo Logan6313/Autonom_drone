@@ -3,31 +3,76 @@ from pymavlink import mavutil
 from time import sleep
 import math
 
+"""
+Created on May 18 2021
+
+@author: Logan Robert
+Different methods to move the drone
+"""
 
 class Drone():
 
 	def __init__(self,pixhawk):
 		print("Creation of Drone instance")
 		self.pixhawk=pixhawk
-	
+
 	def info(self):
-			vehicle_state=[self.pixhawk.version,self.pixhawk.location.global_frame.lat,self.pixhawk.location.global_frame.lon,
-self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.battery.voltage,self.pixhawk.battery.level]
+		""" -----------------------------------------
+		Get informations about the drone and the flight controller
+		Pram : /
+		Return : version of the flight controller (string)
+				 home location of the drone (latitude/degrees - longitude/degrees - altitude/meters)
+				 location of the drone (latitude/degrees - longitude/degrees - altitude/meters)
+				 attitude of the drone (yaw/radians)
+				 battery voltage (mV)
+				 battery level (%)
+			-----------------------------------------
+		"""
+		vehicle_state=[
+			self.pixhawk.version,
+			self.get_home_location(),
+			self.pixhawk.location.global_frame.lat,
+			self.pixhawk.location.global_frame.lon,
+			self.pixhawk.location.global_frame.alt,
+			self.pixhawk.attitude.yaw,
+			self.pixhawk.attitude.pitch,
+			self.pixhawk.attitude.roll,
+			self.pixhawk.battery.voltage,
+			self.pixhawk.battery.level]
 
-			return vehicle_state
+		return vehicle_state
 
-	def set_mode(self,data=None):
+	def set_mode(self,mode=None):
+	  	""" -----------------------------------------
+		Change the flight mode of the drone OR Get the flight mode
+		Pram : mode (string)
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Change flight mode")
-		if data is None:
+
+		# get the flight mode if mode=None 
+		if mode is None:
 			return self.pixhawk.mode
+
+		# change the flight mode
 		else:
-			self.pixhawk.mode=VehicleMode(data)
+			self.pixhawk.mode=VehicleMode(mode)
 
 	def arm(self,state=None):
-
+		""" -----------------------------------------
+		Arm OR Disarm OR Get the arm mode of the drone
+		Pram : state (string)
+		Return : /
+			-----------------------------------------
+		"""
+	
+		# get the arm mode if state=None
 		if state is None:
 			return self.pixhawk.armed
-
+		
+		# arm the drone if state="on"
 		elif state=="on":
 			print("Let's arm !")
 
@@ -45,6 +90,7 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 
 			return True
 
+		# disarm the drone if state="off"
 		elif state=="off":
 			print("Let's disarm !")
 			self.pixhawk.armed=False
@@ -56,14 +102,39 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 
 
 	def airspeed(self,data):
+	 	""" -----------------------------------------
+		Change the airspeed of the drone
+		Pram : data (m/s)
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's change airspeed velocity !")
 		self.pixhawk.airspeed=float(data)
 
+
 	def groundspeed(self,data):
+		""" -----------------------------------------
+		Change the groundspeed of the drone
+		Param : data (m/s)
+		Return: /
+			-----------------------------------------
+		"""
+
 		print("Let's change groundspeed velocity !")
 		self.pixhawk.groundspeed=float(data)
 
+
 	def set_home_location(self,lat,lon,alt):
+		""" -----------------------------------------
+		Change the home location of the drone
+		Param : lat => new latitude (degrees)
+				lon => new longitude (degrees)
+				alt => new altitude (meters)
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's set home location !")
 		pos=self.pixhawk.location.global_frame
 		pos.lat=float(lat)
@@ -71,15 +142,40 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 		pos.alt=float(alt)
 		self.pixhawk.home_location=pos 
 
+
 	def get_home_location(self):
+		""" -----------------------------------------
+		Get home location of the drone
+		Param: /
+		Return : home location (LocationGlobal)
+			-----------------------------------------
+		"""
 		print("Let's get home location !")
+		cmds = self.pixhawk.commands
+		cmds.download()
+		cmds.wait_ready()
 		return self.pixhawk.home_location
 
+
 	def current_location(self) :
+		""" -----------------------------------------
+		Get current location of the drone
+		Param : /
+		Return : current location(LocationGlobal)
+			-----------------------------------------
+		"""
+
 		return self.pixhawk.location.global_frame
 
 
 	def takeoff(self,data):
+		""" -----------------------------------------
+		The drone takes off
+		Param : data => altitude (meters) to reach during takeoff
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's takeoff !")
 
 		self.arm("on")
@@ -96,6 +192,14 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 
 
 	def reach_altitude(self,data,speed):
+	 	""" -----------------------------------------
+		The drone goes in a specific altitude remaining on site
+		Param : data => altitude (meters) to reach
+				speed => speed (m/s) where the drone will fly 
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's reach altitude: " + data)
 
 		self.airspeed(speed)
@@ -116,7 +220,18 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 
 		print("Reached target altitude")
 
+
 	def go_location(self,lat,lon,alt,speed):
+		""" -----------------------------------------
+		Thge drone goes in a specific location choosen by the user
+		Param : lat => latitude (degrees) to reach
+				lon => longitude (degrees) to reach
+				alt => altitude (meters) to reach
+				speed => speed (m/s) where the drone will fly 
+		Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's go to a new location !")
 
 		self.airspeed(speed)
@@ -134,18 +249,147 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 
 		print("Reached location")
 
+
 	def calc_distance(self,current,target):
+		""" -----------------------------------------
+		Method used to calculate distance between two points on Earth
+		Param : current => current location of the drone (LocationGlobalRelative)
+				target => traget location to reach (LocationGlobalRelative)
+		Return : d => distance between the two points (meters)
+			-----------------------------------------
+		"""
+
+		#Conversion degrees-radians
 		c_lat=math.radians(current.lat)
 		t_lat=math.radians(target.lat)
 		c_lon=math.radians(current.lon)
 		t_lon=math.radians(target.lon)
 
+		#Calculation of the distance
 		d=6371*math.acos(math.sin(c_lat)*math.sin(t_lat)+math.cos(c_lat)*math.cos(t_lat)*math.cos(t_lon-c_lon))
 		
 		return d*1000
 
 
+	"""------------------MANUAL	 CONTROL--------------------"""
+
+	def manual_control_x(self,x):
+		""" -----------------------------------------
+		Control the drone according the x axis
+		Param : x => distance (meters) 
+		Return : /
+			-----------------------------------------
+		"""
+
+		msg = self.pixhawk.message_factory.set_position_target_local_ned_encode(
+		    0,       # time_boot_ms (not used)
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_FRAME_BODY_NED, # frame
+		    0b0000111111111000, # type_mask (only position enabled)
+		    float(x), # X position
+		    0, # Y Position 
+		    0, # Altitude in meters 
+		    0, # X velocity in NED frame in m/s
+		    0, # Y velocity in NED frame in m/s
+		    0, # Z velocity in NED frame in m/s
+		    0, 0, 0, # afx, afy, afz acceleration (not supported yet)
+		    0, 0)    # yaw, yaw_rate (not supported yet)
+	
+		# send command to vehicle
+		self.pixhawk.send_mavlink(msg)
+		self.pixhawk.flush()
+
+	def manual_control_y(self,y):
+
+		""" -----------------------------------------
+		Control the drone according the y axis
+		Param : y => distance (meters) 
+		Return : /
+			-----------------------------------------
+		"""
+
+		msg = self.pixhawk.message_factory.set_position_target_local_ned_encode(
+		    0,       # time_boot_ms (not used)
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_FRAME_BODY_NED, # frame
+		    0b0000111111111000, # type_mask (only position enabled)
+		    0, # X Position 
+		    float(y), # Y Position
+		    0, # Altitude in meters 
+		    0, # X velocity in NED frame in m/s
+		    0, # Y velocity in NED frame in m/s
+		    0, # Z velocity in NED frame in m/s
+		    0, 0, 0, # afx, afy, afz acceleration (not supported yet)
+		    0, 0)    # yaw, yaw_rate (not supported yet)
+	
+		# send command to vehicle
+		self.pixhawk.send_mavlink(msg)
+		self.pixhawk.flush()
+
+
+	def send_global_velocity(self,velocity_x, velocity_y, velocity_z, duration):
+		""" -----------------------------------------
+		Control the drone in velocity
+		Param : velocity_x => velocity (m/s) for x axis
+				velocity_y => velocity (m/s) for y axis
+				velocity_z => velocity (m/s) for z axis
+				duration => time (s) where the drone change velocity
+		Return : /
+			-----------------------------------------
+		"""
+		
+
+		msg = self.pixhawk.message_factory.set_position_target_global_int_encode(
+		    0,       # time_boot_ms (not used)
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, # frame
+		    0b0000111111000111, # type_mask (only speeds enabled)
+		    0, # X Position in WGS84 frame in 1e7 * meters
+		    0, # Y Position in WGS84 frame in 1e7 * meters
+		    0, # Altitude in meters
+		    float(velocity_x), # X velocity in NED frame in m/s
+		    float(velocity_y), # Y velocity in NED frame in m/s
+		    float(velocity_z), # Z velocity in NED frame in m/s
+		    0, 0, 0, # afx, afy, afz acceleration (not supported yet)
+		    0, 0)    # yaw, yaw_rate (not supported yet) 
+
+		# send command to vehicle on 1 Hz cycle
+		for x in range(0,int(duration)):
+		    self.pixhawk.send_mavlink(msg)
+		    sleep(1)
+
+
+	def condition_yaw(self,yaw):
+		""" -----------------------------------------
+			Change the yaw of the drone
+			Param : yaw => angle to reach (degrees) 
+			Return : /
+			-----------------------------------------
+		"""
+		msg = self.pixhawk.message_factory.command_long_encode(
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
+		    0, #confirmation
+		    float(yaw), # param 1, yaw in degrees
+		    0,          # param 2, yaw speed deg/s
+		    1,          # param 3, direction -1 counter clockwise, 1 clockwise
+		    0, 			# param 4, relative offset 1, absolute angle 0
+		    0, 0, 0)    # param 5-7 not used
+
+		# send command to vehicle
+		self.pixhawk.send_mavlink(msg)
+
+
+	"""------------------AUTONOM CONTROL--------------------"""
+
 	def mission(self,file):
+		""" -----------------------------------------
+			The drone execute a mission autonomously from a file ".txt" 
+			Param : file ".txt" to decode 
+			Return : /
+			-----------------------------------------
+		"""
+
 		print("Let's execute mission")
 		lat=[]
 		lon=[]
@@ -177,7 +421,7 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 				cmds.add(cmd)
 																							
 		cmds.upload()
-
+		print(cmds.count)
 		self.takeoff(10)
 		self.pixhawk.commands.next=0
 		self.set_mode("AUTO")
@@ -195,57 +439,6 @@ self.pixhawk.location.global_frame.alt,self.pixhawk.attitude.yaw,self.pixhawk.ba
 			if waypoint==cmds.count:
 				break
 			sleep(1)
-
-	def manual_control_x(self,x):
-		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000000,float(x),0,0,0,0,0,0,0,0,0,0)
-		self.pixhawk.send_mavlink(msg)
-		self.pixhawk.flush()
-
-	def manual_control_y(self,y):
-		msg=self.pixhawk.message_factory.set_position_target_local_ned_encode(0,0,0,8,0b0000111111000000,0,float(y),0,0,0,0,0,0,0,0,0)
-		self.pixhawk.send_mavlink(msg)
-		self.pixhawk.flush()
-
-	def send_global_velocity(velocity_x, velocity_y, velocity_z, duration):
-
-		msg = self.pixhawk.message_factory.set_position_target_global_int_encode(
-		    0,       # time_boot_ms (not used)
-		    0, 0,    # target system, target component
-		    mavutil.mavlink.MAV_FRAME_GLOBAL_RELATIVE_ALT_INT, # frame
-		    0b0000111111000111, # type_mask (only speeds enabled)
-		    0, # lat_int - X Position in WGS84 frame in 1e7 * meters
-		    0, # lon_int - Y Position in WGS84 frame in 1e7 * meters
-		    0, # alt - Altitude in meters in AMSL altitude(not WGS84 if absolute or relative)
-		    # altitude above terrain if GLOBAL_TERRAIN_ALT_INT
-		    float(velocity_x), # X velocity in NED frame in m/s
-		    float(velocity_y), # Y velocity in NED frame in m/s
-		    float(velocity_z), # Z velocity in NED frame in m/s
-		    0, 0, 0, # afx, afy, afz acceleration (not supported yet, ignored in GCS_Mavlink)
-		    0, 0)    # yaw, yaw_rate (not supported yet, ignored in GCS_Mavlink) 
-
-		# send command to vehicle on 1 Hz cycle
-		for x in range(0,int(duration)):
-		    self.pixhawk.send_mavlink(msg)
-		    sleep(1)
-
-
-	def condition_yaw(self,yaw):
-
-		# create the CONDITION_YAW command using command_long_encode()
-		msg = self.pixhawk.message_factory.command_long_encode(
-		    0, 0,    # target system, target component
-		    mavutil.mavlink.MAV_CMD_CONDITION_YAW, #command
-		    0, #confirmation
-		    float(yaw),    # param 1, yaw in degrees
-		    0,          # param 2, yaw speed deg/s
-		    1,          # param 3, direction -1 ccw, 1 cw
-		    0, # param 4, relative offset 1, absolute angle 0
-		    0, 0, 0)    # param 5 ~ 7 not used
-		# send command to vehicle
-		self.pixhawk.send_mavlink(msg)
-
-
-		
 					
 if __name__=="__main__":
 	print("Begin of the program")	

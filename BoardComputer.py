@@ -4,6 +4,12 @@ from Drone import *
 import argparse
 import threading
  
+"""
+Created on May 18 2021
+
+@author: Logan Robert
+Interface between ground station control and the flight controller inside the drone
+"""
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--connect', default='127.0.0.1:14550')
@@ -78,55 +84,51 @@ class BoardComputer():
 							state=self.drone.arm()
 							self.write("Arm ? : {}".format(state))
 						
-					elif target[0]=="takeoff":
-						if len(target)==2:
+					elif target[0]=="takeoff" and len(target)==2 :
+						if target[1]>'0'and target[1]<="10":
 							self.drone.takeoff(target[1])
 							self.write("Altitude reached : {} meters".format(target[1]))
+						else:
+							self.write("No command valid")
 
-					elif target[0]=="alt":
-						if len(target)==3:
-							self.drone.reach_altitude(target[1],target[2])
-							self.write("Altitude reached : {} meters".format(target[1]))
+					elif target[0]=="alt" and len(target)==3:
+						self.drone.reach_altitude(target[1],target[2])
+						self.write("Altitude reached : {} meters".format(target[1]))
 
-					elif target[0]=="go":
-						if len(target)==5:
-							self.drone.go_location(target[1],target[2],target[3],target[4])
-							self.write("New location reached")
+					elif target[0]=="go" and len(target)==5:
+						self.drone.go_location(target[1],target[2],target[3],target[4])
+						self.write("New location reached")
 
-					elif target[0]=="home":
-						if len(target)==4:
-							self.drone.set_home_location(target[1],target[2],target[3])
-							self.write("New home location")
+					elif target[0]=="home" and len(target)==4:
+						self.drone.set_home_location(target[1],target[2],target[3])
+						self.write("New home location")
 
-					elif target[0]=="mission":
+					elif target[0]=="mission" and len(target)==1:
 						self.drone.mission("test.txt")
 						self.write("Mission end")
 
-					elif target[0]=='x':
-						if len(target)==2:
-							self.drone.manual_control_x(target[1])
-							self.write("Manual control x ok")
+					elif target[0]=='x'and len(target)==2:
+						self.drone.manual_control_x(target[1])
+						self.write("Manual control x ok")
 
-					elif target[0]=='y':
-						if len(target)==2:
-							self.drone.manual_control_y(target[1])
-							self.write("Manual control y ok")
+					elif target[0]=='y'and len(target)==2:
+						self.drone.manual_control_y(target[1])
+						self.write("Manual control y ok")
 
 
-					elif target[0]=="yaw":
-							self.drone.condition_yaw(target[1])
-							self.write("Manual control yaw ok")
+					elif target[0]=="yaw" and len(target)==2:
+						self.drone.condition_yaw(target[1])
+						self.write("Manual control yaw ok")
 										
-					elif target[0]=="vel":
-						if len(target)==5:
-							self.drone.send_global_velocity(target[1],target[2],target[3],target[4])
-							self.write("Velocity changed")
+					elif target[0]=="vel" and len(target)==5:
+						self.drone.send_global_velocity(target[1],target[2],target[3],target[4])
+						self.write("Velocity changed")
 
-					elif target[0]=="info":
+					elif target[0]=="info" and len(target)==1:
 						vehicle_state=self.drone.info()
-						self.write("Version: {} \nLatitude: {} \nLongitude: {} \nAltitude: {}m \n Yaw: {}  \nBattery voltage: {} mv \nBattery percent {} % ".format(vehicle_state[0],vehicle_state[1],vehicle_state[2],vehicle_state[3],vehicle_state[4],vehicle_state[5],vehicle_state[6]))
+						self.write("Version: {} \nHome location: {} \nLatitude: {} \nLongitude: {} \nAltitude: {}m \n Yaw: {}  \n Pitch: {}  \n Roll: {}  \n Battery voltage: {} mv \nBattery percent {} % ".format(vehicle_state[0],vehicle_state[1],vehicle_state[2],vehicle_state[3],vehicle_state[4],vehicle_state[5],vehicle_state[6],vehicle_state[7],vehicle_state[8],vehicle_state[9]))
 
-					elif target[0]=="close":
+					elif target[0]=="close" and len(target)==1:
 						self.close()
 						break
 
