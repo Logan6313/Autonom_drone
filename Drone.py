@@ -191,18 +191,17 @@ class Drone():
 		print("Take off complete")
 
 
-	def reach_altitude(self,data,speed):
+	def reach_altitude(self,data):
 	 	""" -----------------------------------------
 		The drone goes in a specific altitude remaining on site
 		Param : data => altitude (meters) to reach
-				speed => speed (m/s) where the drone will fly 
 		Return : /
 			-----------------------------------------
 		"""
 
 		print("Let's reach altitude: " + data)
 
-		self.airspeed(speed)
+		self.airspeed(5)
 		cmds = self.pixhawk.commands
 		cmds.download()
 		cmds.wait_ready()
@@ -421,7 +420,7 @@ class Drone():
 				cmds.add(cmd)
 																							
 		cmds.upload()
-		print(cmds.count)
+
 		self.takeoff(10)
 		self.pixhawk.commands.next=0
 		self.set_mode("AUTO")
