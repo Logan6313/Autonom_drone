@@ -42,7 +42,7 @@ class Drone():
 
 		return vehicle_state
 
-	def set_mode(self,mode=None):
+	def mode(self,mode=None):
 	  	""" -----------------------------------------
 		Change the flight mode of the drone OR Get the flight mode
 		Pram : mode (string)
@@ -81,7 +81,7 @@ class Drone():
 				time.sleep(1)
 					
 			print "Arming motors"
-			self.set_mode("GUIDED")
+			self.mode("GUIDED")
 			self.pixhawk.armed = True
 
 			while not self.pixhawk.armed:
@@ -222,7 +222,7 @@ class Drone():
 
 	def go_location(self,lat,lon,alt,speed):
 		""" -----------------------------------------
-		Thge drone goes in a specific location choosen by the user
+		The drone goes in a specific location choosen by the user
 		Param : lat => latitude (degrees) to reach
 				lon => longitude (degrees) to reach
 				alt => altitude (meters) to reach
@@ -274,7 +274,7 @@ class Drone():
 
 	def manual_control_x(self,x):
 		""" -----------------------------------------
-		Control the drone according the x axis
+		Control the drone in position according the x axis
 		Param : x => distance (meters) 
 		Return : /
 			-----------------------------------------
@@ -301,7 +301,7 @@ class Drone():
 	def manual_control_y(self,y):
 
 		""" -----------------------------------------
-		Control the drone according the y axis
+		Control the drone in position according the y axis
 		Param : y => distance (meters) 
 		Return : /
 			-----------------------------------------
@@ -328,7 +328,7 @@ class Drone():
 
 	def send_global_velocity(self,velocity_x, velocity_y, velocity_z, duration):
 		""" -----------------------------------------
-		Control the drone in velocity
+		Control the drone in velocity according 3 axis
 		Param : velocity_x => velocity (m/s) for x axis
 				velocity_y => velocity (m/s) for y axis
 				velocity_z => velocity (m/s) for z axis
@@ -423,7 +423,7 @@ class Drone():
 
 		self.takeoff(10)
 		self.pixhawk.commands.next=0
-		self.set_mode("AUTO")
+		self.mode("AUTO")
 		while True:
 			waypoint=self.pixhawk.commands.next
 			print("Current Waypoint: %s",waypoint)

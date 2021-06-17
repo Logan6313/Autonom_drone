@@ -101,12 +101,12 @@ class BoardComputer():
 					if target[0]=="mode":
 						if len(target)==2:
 							if target[1] in mode_list:
-								self.drone.set_mode(target[1])
+								self.drone.mode(target[1])
 								self.write("Mode changed")
 							else:
 								self.write("No command valid")
 						else:
-							mode=self.drone.set_mode()
+							mode=self.drone.mode()
 							self.write("Mode : {}".format(mode))
 
 					elif target[0] == "arm":
@@ -194,7 +194,7 @@ class BoardComputer():
 					
 		except KeyboardInterrupt :
 			print("Exception occured")
-			self.drone.set_mode("RTL")
+			self.drone.mode("RTL")
 			self.close()
 				
 	def write(self,msg):
