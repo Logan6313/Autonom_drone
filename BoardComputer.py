@@ -130,6 +130,10 @@ class BoardComputer():
 						else:
 							self.write("No command valid")
 
+					elif target[0]=="land" and len(target)==1 :
+							self.drone.land_here()
+							self.write("Land ok")
+
 					elif target[0]=="alt" and len(target)==2:
 						if self.check_decode_int(target[1])==True:
 							self.drone.reach_altitude(target[1])
@@ -217,7 +221,7 @@ if __name__=="__main__":
 	print("INITIALIZATION FINISHED")
 	#Declarations of instance
 	drone=Drone(pixhawk)
-	Nvidia=BoardComputer(drone)
+	Nvidia=BoardComputer(drone,14550,'127.0.0.1')
 	Nvidia.connect()
 	Nvidia.listener_loop()
 

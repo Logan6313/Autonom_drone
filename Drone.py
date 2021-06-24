@@ -190,6 +190,30 @@ class Drone():
 
 		print("Take off complete")
 
+	def land_here(self):
+		""" -----------------------------------------
+		The drone land in the current location
+		Param : /
+		Return : /
+			-----------------------------------------
+		"""
+		print("Let's land here !")
+		
+		pos=self.current_location()
+
+		msg = self.pixhawk.message_factory.command_long_encode(
+		    0, 0,    # target system, target component
+		    mavutil.mavlink.MAV_CMD_NAV_LAND, #command
+		    0, #confirmation
+		    0, # param 1
+		    0,          # param 2
+		    0,          # param 3
+		    0, 			# param 4
+		    pos.lat, pos.lon,0)    # param 5-7 : lat,lon,alt
+
+		# send command to vehicle
+		self.pixhawk.send_mavlink(msg)
+
 
 	def reach_altitude(self,data):
 	 	""" -----------------------------------------
