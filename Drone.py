@@ -293,7 +293,6 @@ class Drone():
 		
 		return d*1000
 
-
 	"""------------------MANUAL	 CONTROL--------------------"""
 
 	def manual_control_x(self,x):
