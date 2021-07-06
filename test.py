@@ -2,32 +2,45 @@
 
 
 import sys
-from PyQt4 import QtCore, QtGui
+import socket
+from PyQt4 import QtCore, QtGui, QtNetwork
+import GUI
+import time
 
-class Window(QtGui.QWidget):  #Window class inherit from the QtGui.QWidget class 
+class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):  
+	def __init__(self,parent=None):
 
-	def __init__(self):
-
-		super(Window, self).__init__()   #call the constructor QtGui.QWidget
-
-		self.setGeometry(300, 300, 250, 150)
-		self.setWindowTitle("Interface")    
+		super(Window, self).__init__(parent)   #call the constructor QtGui.QWidget
+		self.setupUi(self)
 		
-		button = QtGui.QPushButton('Click', self)
-		button.resize(button.sizeHint())
-		button.clicked.connect(self.button)
-
-		self.show()
+		self.pushButton.clicked.connect(self.button)
+		self.pushButton_2.clicked.connect(self.erase)
+		self.lineEdit.textChanged.connect(self.update)
 
 	def button(self):
-		print("Button pressed")
-	
+		print("Button1 pressed")
+		self.lineEdit.setText("Karim")
+		self.label.setText(self.lineEdit.displayText())
+
+	def erase(self):
+		print("Button2 pressed")
+		self.lineEdit.clear()
+
+	def update(self):
+		self.label.setText(self.lineEdit.displayText())
+		
 
 
 if __name__ == "__main__":
 
-    app = QtGui.QApplication(sys.argv)
-    win = Window()
-    sys.exit(app.exec_())
-
-
+	# Create a TCP/IP socket
+	"""sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	 
+	# Connect the socket to the port where the server is listening
+	server_address = ('192.168.1.86', 50010)
+	print('Connecting to %s port %s' % server_address)
+	sock.connect(server_address)"""
+	app = QtGui.QApplication(sys.argv)
+	win = Window()
+	win.show()
+	sys.exit(app.exec_())
