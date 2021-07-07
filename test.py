@@ -13,17 +13,52 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		super(Window, self).__init__(parent)   #call the constructor QtGui.QWidget
 		self.setupUi(self)
 		
-		self.pushButton.clicked.connect(self.button)
+		self.commandLinkButton.clicked.connect(self.button)
+		self.comboBox.currentIndexChanged.connect(self.list_event)
+
+
+	def list_event(self):
+		print("Item pressed")
+		rank=self.comboBox.currentIndex()
+		print(rank)
+		command=self.comboBox.currentText()
+		print(str(command))
+
+		if rank==3:
+			self.label_2.setText("Altitude (m)")
+
+
+
 
 	def button(self):
-		print("Button1 pressed")
-		mes="mode"
-		enc_mes = mes.encode()
-		print('Sending "%s"' % mes)
+		print("Button pressed")
+		if self.comboBox.currentIndex()<3:
+			mes=str(self.comboBox.currentText())
+		elif self.comboBox.currentIndex()==3:
+			mes=str(self.comboBox.currentText() + " " + self.lineEdit_2.text())
+
+		self.socket(str(mes))
+		self.clear()
+
+	def socket(self,message):
+		print("Send message to the NVIDIA")
+		enc_mes = message.encode()
+		print('Sending "%s"' % message)
 		sock.send(enc_mes)
 		data=sock.recv(4096)
 		print(data)
 		self.lineEdit.setText(data)
+
+	def clear(self):
+		print("clear")
+		self.label_2.clear()
+		self.label_3.clear()
+		self.label_4.clear()
+		self.label_5.clear()
+		self.lineEdit_2.clear()
+		self.lineEdit_3.clear()
+		self.lineEdit_4.clear() 
+		self.lineEdit_5.clear()
 
 
 
