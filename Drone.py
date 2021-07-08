@@ -94,9 +94,6 @@ class Drone():
 		elif state=="off":
 			print("Let's disarm !")
 			self.pixhawk.armed=False
-			while not self.pixhawk.armed==False:
-				print " Waiting for disarming..."
-				time.sleep(1)
 
 			return True
 
