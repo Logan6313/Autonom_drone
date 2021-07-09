@@ -19,19 +19,53 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		self.horizontalSlider.valueChanged.connect(self.slider_move)
 		self.radioButton.clicked.connect(self.arm_on)
 		self.radioButton_2.clicked.connect(self.arm_off)
+		self.pushButton.clicked.connect(self.mission)
 
 
 
 
 	def list_event(self):
 		print("Item pressed")
+		self.clear()
 		rank=self.comboBox.currentIndex()
 		print(rank)
 		command=self.comboBox.currentText()
 		print(str(command))
 
 		if rank==3:
+			self.label_2.setText("Lat (degree)")
+			self.label_3.setText("Lon (degree)")
+			self.label_4.setText("Alt (m)")
+			self.label_11.setText("3 parameters :")
+
+		elif rank==5 or rank==6:
 			self.label_2.setText("Altitude (m)")
+			self.label_11.setText("1 parameter :")
+
+		elif rank==7 or rank==8:
+			self.label_2.setText("Distance (m)")
+			self.label_11.setText("1 parameter :")
+
+		elif rank==9:
+			self.label_2.setText("Yaw (degree)")
+			self.label_11.setText("1 parameter :")
+
+		elif rank==10:
+			self.label_2.setText("Vel_x (m/s)")
+			self.label_3.setText("Vel_y (m/s)")
+			self.label_4.setText("Vel_z (m/s)")
+			self.label_5.setText("Duration (s)")
+			self.label_11.setText("4 parameters :")
+
+		elif rank==11:
+			self.label_2.setText("Lat (degree)")
+			self.label_3.setText("Lon (degree)")
+			self.label_4.setText("Alt (m)")
+			self.label_5.setText("Airspeed (m/s)")
+			self.label_11.setText("4 parameters :")
+
+		else:
+			self.label_11.setText("0 parameter")
 
 	def slider_command(self):
 		print("Value slider command")
@@ -55,10 +89,20 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 
 	def button(self):
 		print("Button pressed")
-		if self.comboBox.currentIndex()<3:
+
+		if self.comboBox.currentIndex()<3 or self.comboBox.currentIndex()==4 :
 			mes=str(self.comboBox.currentText())
+
 		elif self.comboBox.currentIndex()==3:
+			mes=str(self.comboBox.currentText() + " " + self.lineEdit_2.text()+ " " + self.lineEdit_3.text()+ " " + self.lineEdit_4.text())
+			
+		elif self.comboBox.currentIndex()>4 and self.comboBox.currentIndex()<10:
 			mes=str(self.comboBox.currentText() + " " + self.lineEdit_2.text())
+			
+		else:
+			mes=str(self.comboBox.currentText() + " " + self.lineEdit_2.text()+ " " + self.lineEdit_3.text()+ " " + self.lineEdit_4.text()+ " " + self.lineEdit_5.text())
+			
+
 
 		self.socket(mes)
 		self.clear()
@@ -73,7 +117,9 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		print("Arm off checked")
 		mes="arm off"
 		self.socket(mes)
-		
+	
+	def mission(self):
+		self.socket("mission")
 
 	def close_socket(self):
 		print("Button pressed")
@@ -103,13 +149,13 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 
 if __name__ == "__main__":
 
-	"""# Create a TCP/IP socket
+	# Create a TCP/IP socket
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	 
 	# Connect the socket to the port where the server is listening
 	server_address = ('192.168.1.86', 50010)
 	print('Connecting to %s port %s' % server_address)
-	sock.connect(server_address)"""
+	sock.connect(server_address)
 
 	app = QtGui.QApplication(sys.argv)
 	win = Window()

@@ -121,7 +121,7 @@
     </item>
     <item>
      <property name="text">
-      <string>takeoff</string>
+      <string>home</string>
      </property>
     </item>
     <item>
@@ -131,17 +131,12 @@
     </item>
     <item>
      <property name="text">
-      <string>home</string>
+      <string>takeoff</string>
      </property>
     </item>
     <item>
      <property name="text">
       <string>alt</string>
-     </property>
-    </item>
-    <item>
-     <property name="text">
-      <string>go</string>
      </property>
     </item>
     <item>
@@ -164,13 +159,18 @@
       <string>vel</string>
      </property>
     </item>
+    <item>
+     <property name="text">
+      <string>go</string>
+     </property>
+    </item>
    </widget>
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>40</x>
+      <x>20</x>
       <y>370</y>
-      <width>61</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -184,14 +184,14 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>430</x>
+      <x>150</x>
       <y>370</y>
-      <width>51</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Param4</string>
+     <string>Param2</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -200,9 +200,9 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>300</x>
+      <x>280</x>
       <y>370</y>
-      <width>71</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
@@ -216,14 +216,14 @@
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>410</x>
       <y>370</y>
-      <width>61</width>
+      <width>101</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
-     <string>Param2</string>
+     <string>Param4</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -356,7 +356,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string notr="true">border-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.495 rgba(255, 255, 255, 255), stop:0.505 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));</string>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#000000;&quot;&gt;Interface for control Pixhawk4&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:14pt; font-weight:600; color:#000000;&quot;&gt;Interface for Pixhawk4 control &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="textFormat">
      <enum>Qt::AutoText</enum>
@@ -434,6 +434,19 @@ font: 12pt &quot;Sans Serif&quot;;
     </property>
     <property name="scaledContents">
      <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_11">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0 parameter :</string>
     </property>
    </widget>
   </widget>
