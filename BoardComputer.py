@@ -138,7 +138,7 @@ class BoardComputer():
 					elif target[0]=="airspeed" and len(target)==2 :
 						if self.check_decode_int(target[1])==True:
 							self.drone.airspeed(target[1])
-							self.write("Airspeed reached : {} m/s".format(target[1]))
+							self.write("Airspeed changed to {} m/s".format(target[1]))
 						else:
 							self.write("No command valid")
 
