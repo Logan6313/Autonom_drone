@@ -135,6 +135,13 @@ class BoardComputer():
 							self.drone.land_here()
 							self.write("Land ok")
 
+					elif target[0]=="airspeed" and len(target)==2 :
+						if self.check_decode_int(target[1])==True:
+							self.drone.airspeed(target[1])
+							self.write("Airspeed reached : {} m/s".format(target[1]))
+						else:
+							self.write("No command valid")
+
 					elif target[0]=="alt" and len(target)==2:
 						if self.check_decode_int(target[1])==True:
 							self.drone.reach_altitude(target[1])
