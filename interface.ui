@@ -22,7 +22,7 @@
    <string>Interface</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QCommandLinkButton" name="commandLinkButton">
+   <widget class="QCommandLinkButton" name="Button_Send">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -38,7 +38,7 @@
      <string>SEND</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="lineEdit_Param1">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,7 +51,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_3">
+   <widget class="QLineEdit" name="lineEdit_Param2">
     <property name="geometry">
      <rect>
       <x>140</x>
@@ -64,7 +64,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_4">
+   <widget class="QLineEdit" name="lineEdit_Param3">
     <property name="geometry">
      <rect>
       <x>270</x>
@@ -77,7 +77,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_5">
+   <widget class="QLineEdit" name="lineEdit_Param4">
     <property name="geometry">
      <rect>
       <x>400</x>
@@ -90,7 +90,7 @@
      <string/>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="comboBox_Command">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -165,7 +165,7 @@
      </property>
     </item>
    </widget>
-   <widget class="QLabel" name="label_2">
+   <widget class="QLabel" name="label_Param1">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -181,7 +181,7 @@
      <enum>Qt::AutoText</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_3">
+   <widget class="QLabel" name="label_Param2">
     <property name="geometry">
      <rect>
       <x>150</x>
@@ -197,7 +197,7 @@
      <enum>Qt::AutoText</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
+   <widget class="QLabel" name="label_Param3">
     <property name="geometry">
      <rect>
       <x>280</x>
@@ -213,7 +213,7 @@
      <enum>Qt::AutoText</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_5">
+   <widget class="QLabel" name="label_Param4">
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -229,7 +229,7 @@
      <enum>Qt::AutoText</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="label_Message_received">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -248,7 +248,7 @@
      <enum>Qt::AutoText</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="Button_Mission">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -261,7 +261,7 @@
      <string>Mission</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="Button_Socket">
     <property name="geometry">
      <rect>
       <x>690</x>
@@ -279,7 +279,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>Close Socket</string>
     </property>
    </widget>
-   <widget class="QSlider" name="horizontalSlider">
+   <widget class="QSlider" name="horizontalSlider_Mode">
     <property name="geometry">
      <rect>
       <x>80</x>
@@ -304,7 +304,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <number>4</number>
     </property>
    </widget>
-   <widget class="QLabel" name="label_6">
+   <widget class="QLabel" name="label_ModeBrowser">
     <property name="geometry">
      <rect>
       <x>160</x>
@@ -317,7 +317,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>MODE</string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton">
+   <widget class="QRadioButton" name="radioButton_Arm">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -330,7 +330,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>Arm </string>
     </property>
    </widget>
-   <widget class="QRadioButton" name="radioButton_2">
+   <widget class="QRadioButton" name="radioButton_Disarm">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -343,7 +343,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>Disarm</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_7">
+   <widget class="QLabel" name="label_Title">
     <property name="geometry">
      <rect>
       <x>240</x>
@@ -391,7 +391,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_8">
+   <widget class="QLabel" name="label_Arm_Disarm">
     <property name="geometry">
      <rect>
       <x>670</x>
@@ -404,7 +404,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#00007f;&quot;&gt;ARM/DISARM THE VEHICLE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_9">
+   <widget class="QLabel" name="label_Mode">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -417,7 +417,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic; color:#00007f;&quot;&gt;CHANGE THE FLIGHT MODE OF THE VEHICLE&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_10">
+   <widget class="QLabel" name="logo">
     <property name="geometry">
      <rect>
       <x>770</x>
@@ -436,7 +436,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_11">
+   <widget class="QLabel" name="label_Parameter">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -462,7 +462,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="QLabel" name="label_12">
+   <widget class="QLabel" name="label_Mission">
     <property name="geometry">
      <rect>
       <x>40</x>
@@ -485,7 +485,7 @@ font: 12pt &quot;Sans Serif&quot;;
      </rect>
     </property>
    </widget>
-   <widget class="QLabel" name="label_13">
+   <widget class="QLabel" name="label_Command">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -511,7 +511,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="Button_Isarmable">
     <property name="geometry">
      <rect>
       <x>450</x>
@@ -521,10 +521,10 @@ font: 12pt &quot;Sans Serif&quot;;
      </rect>
     </property>
     <property name="text">
-     <string>is_armable</string>
+     <string>is_armable?</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_14">
+   <widget class="QLabel" name="label_Isarmable">
     <property name="geometry">
      <rect>
       <x>390</x>

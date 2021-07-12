@@ -19,7 +19,7 @@ class Drone():
 	def info(self):
 		""" -----------------------------------------
 		Get informations about the drone and the flight controller
-		Pram : /
+		Param : /
 		Return : version of the flight controller (string)
 				 home location of the drone (latitude/degrees - longitude/degrees - altitude/meters)
 				 location of the drone (latitude/degrees - longitude/degrees - altitude/meters)
