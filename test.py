@@ -19,6 +19,7 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		self.radioButton.clicked.connect(self.arm_on)
 		self.radioButton_2.clicked.connect(self.arm_off)
 		self.pushButton.clicked.connect(self.mission)
+		self.pushButton_3.clicked.connect(self.is_armable)
 
 
 	def list_event(self):
@@ -108,6 +109,10 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		self.socket(mes)
 		self.clear()
 
+	def is_armable(self):
+		mes="is_armable"
+		self.socket(mes)
+
 	def arm_on(self):
 		print("Arm on checked")
 		mes="arm on"
@@ -150,13 +155,13 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 
 if __name__ == "__main__":
 
-	"""# Create a TCP/IP socket
+	# Create a TCP/IP socket
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	 
 	# Connect the socket to the port where the server is listening
 	server_address = ('192.168.1.86', 50010)
 	print('Connecting to %s port %s' % server_address)
-	sock.connect(server_address)"""
+	sock.connect(server_address)
 
 	app = QtGui.QApplication(sys.argv)
 	win = Window()

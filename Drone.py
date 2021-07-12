@@ -63,7 +63,7 @@ class Drone():
 	def arm(self,state=None):
 		""" -----------------------------------------
 		Arm OR Disarm OR Get the arm mode of the drone
-		Pram : state (string)
+		Param : state (string)
 		Return : /
 			-----------------------------------------
 		"""
@@ -96,6 +96,16 @@ class Drone():
 			self.pixhawk.armed=False
 
 			return True
+
+	def is_armable(self):
+		""" -----------------------------------------
+		Get if the vehicle is armable or not
+		Param : /
+		Return : boolean (True or False)
+			-----------------------------------------
+		"""
+	
+		return self.pixhawk.is_armable
 
 
 	def airspeed(self,data):

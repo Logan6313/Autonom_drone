@@ -123,9 +123,14 @@ class BoardComputer():
 						else:
 							state=self.drone.arm()
 							self.write("Arm ? : {}".format(state))
+
+					elif target[0]=="is_armable" and len(target)==1 :
+							state=self.drone.is_armable()
+							self.write("Vehicle is armable ? {}".format(state))
+					
 						
 					elif target[0]=="takeoff" and len(target)==2 :
-						if self.check_decode_int(target[1])==True:
+						if self.check_decode_float(target[1])==True:
 							self.drone.takeoff(target[1])
 							self.write("Altitude reached : {} meters".format(target[1]))
 						else:
@@ -143,7 +148,7 @@ class BoardComputer():
 							self.write("No command valid")
 
 					elif target[0]=="alt" and len(target)==2:
-						if self.check_decode_int(target[1])==True:
+						if self.check_decode_float(target[1])==True:
 							self.drone.reach_altitude(target[1])
 							self.write("Altitude reached : {} meters".format(target[1]))
 						else:
