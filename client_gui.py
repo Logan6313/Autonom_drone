@@ -1,10 +1,15 @@
 #!/usr/bin/python
-
-
 import sys
 import socket
 from PyQt4 import QtCore, QtGui, QtNetwork
 import GUI
+
+"""
+Created on July 12 2021
+
+@author: Logan Robert
+Creation of a GUI interface for off-board computer side
+"""
 
 class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):  
 	def __init__(self,parent=None):
@@ -20,6 +25,10 @@ class Window(QtGui.QMainWindow,GUI.Ui_MainWindow):
 		self.radioButton_Disarm.clicked.connect(self.arm_off)
 		self.Button_Mission.clicked.connect(self.mission)
 		self.Button_Isarmable.clicked.connect(self.is_armable)
+		
+		"""picture=QtGui.QPixmap(400,400)
+		picture.load("Rond_vert.png")
+		self.label.setPixmap(picture)"""
 
 
 	def list_event(self):
@@ -233,7 +242,8 @@ if __name__ == "__main__":
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	 
 	# Connect the socket to the port where the server is listening
-	server_address = ('192.168.1.86', 50010)
+	#server_address = ('192.168.1.86', 50010)
+	server_address = ('127.0.0.1', 14550)
 	print('Connecting to %s port %s' % server_address)
 	sock.connect(server_address)
 
