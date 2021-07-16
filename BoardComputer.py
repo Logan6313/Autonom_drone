@@ -230,11 +230,12 @@ if __name__=="__main__":
 	print("Begin of the program")
 	#Connect to the Vehicle
 	print ('Connecting to vehicle on: %s' % args.connect)
-	pixhawk = connect(args.connect, baud=921600, wait_ready=True)
+	pixhawk = connect(args.connect, baud=115200, wait_ready=True)
 	print("INITIALIZATION FINISHED")
 	#Declarations of instance
 	drone=Drone(pixhawk)
-	Nvidia=BoardComputer(drone)
+	#Nvidia=BoardComputer(drone)
+	Nvidia=BoardComputer(drone,14550,'127.0.0.1')
 	Nvidia.connect()
 	Nvidia.listener_loop()
 
