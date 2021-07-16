@@ -343,7 +343,7 @@ font: 12pt &quot;Sans Serif&quot;;
      <string>Disarm</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_Title">
+   <widget class="QLabel" name="label_">
     <property name="geometry">
      <rect>
       <x>240</x>

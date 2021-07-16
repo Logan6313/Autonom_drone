@@ -236,6 +236,7 @@ if __name__=="__main__":
 	drone=Drone(pixhawk)
 	Nvidia=BoardComputer(drone)
 	#Nvidia=BoardComputer(drone,14550,'127.0.0.1')
+	#Nvidia = ('172.20.10.5', 50010)
 	Nvidia.connect()
 	Nvidia.listener_loop()
 
