@@ -234,9 +234,9 @@ if __name__=="__main__":
 	print("INITIALIZATION FINISHED")
 	#Declarations of instance
 	drone=Drone(pixhawk)
-	Nvidia=BoardComputer(drone)
-	#Nvidia=BoardComputer(drone,14550,'127.0.0.1')
-	#Nvidia = ('172.20.10.5', 50010)
+	#Nvidia=BoardComputer(drone)  #test with NVIDIA in network 1
+	Nvidia=BoardComputer(drone,14550,'127.0.0.1') #test with Gazebo simulator
+	#Nvidia = ('172.20.10.5', 50010) #test with NVIDIA in network 2
 	Nvidia.connect()
 	Nvidia.listener_loop()
 

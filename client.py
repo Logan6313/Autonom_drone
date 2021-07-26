@@ -7,7 +7,9 @@ from time import sleep
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
  
 # Connect the socket to the port where the server is listening
-server_address = ('192.168.1.86', 50010)
+#server_address = ('192.168.1.86', 50010) #test with NVIDIA in network 1
+server_address = ('127.0.0.1', 14550) #test with Gazebo simulator
+#server_address = ('172.20.10.5', 50010) #test with NVIDIA in network 2
 print('Connecting to %s port %s' % server_address)
 sock.connect(server_address)
  
