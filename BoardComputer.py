@@ -167,7 +167,7 @@ class BoardComputer():
 							self.write("No command valid")
 
 					elif target[0]=="mission" and len(target)==1:
-						self.drone.mission("test.txt")
+						self.drone.mission("mission.txt")
 						self.write("Mission end")
 
 					elif target[0]=='x'and len(target)==2:
